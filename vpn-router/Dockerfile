@@ -52,7 +52,8 @@ RUN apk add --no-cache \
     jq \
     openssl \
     python3 \
-    bash
+    bash \
+    ca-certificates
 
 # Create directories
 RUN mkdir -p /opt/pqc/bin /opt/pqc/lib
@@ -61,16 +62,17 @@ RUN mkdir -p /opt/pqc/bin /opt/pqc/lib
 COPY pqc-lib/kyber-wrapper.sh /opt/pqc/bin/
 COPY config/routing/setup-routes.sh /opt/pqc/bin/
 COPY entrypoint-pqc.sh /opt/pqc/bin/
+COPY healthcheck.sh /healthcheck.sh
 
 # Set permissions
-RUN chmod +x /opt/pqc/bin/*
+RUN chmod +x /opt/pqc/bin/* /healthcheck.sh
 
 # Update library path
-ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/lib
 ENV PQC_ENABLED=true
 ENV PQC_ALGORITHM=kyber1024
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost/health || exit 1
+    CMD /healthcheck.sh
 
 ENTRYPOINT ["/init"]
