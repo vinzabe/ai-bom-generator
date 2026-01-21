@@ -1,8 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Abejar PQC VPN Router - Health Check
-# =============================================================================
-# Copyright 2024 Abejar. All rights reserved.
+# PQC VPN Router - Health Check
 # =============================================================================
 
 set -e
@@ -25,10 +23,10 @@ fi
 
 # Check PQC status if enabled
 if [ "${PQC_ENABLED:-true}" = "true" ]; then
-    if [ -f /opt/abejar/lib/libkyber.so.enc ]; then
-        echo "PQC: Kyber library present"
+    if [ -f /usr/local/lib/liboqs.so ] || [ -f /opt/pqc/lib/liboqs.so ]; then
+        echo "PQC: liboqs library present"
     else
-        echo "WARNING: PQC library not found"
+        echo "PQC: Using standard WireGuard (liboqs not found)"
     fi
 fi
 
