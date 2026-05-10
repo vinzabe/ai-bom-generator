@@ -1,0 +1,4 @@
+cryptography>=42.0
+httpx>=0.26
+# Optional, for real sigstore signing (set AIBOM_SIGSTORE_OIDC_TOKEN to enable):
+# sigstore>=3.0
