@@ -78,3 +78,7 @@ We assume:
 - All Python deps are pinned via `requirements.txt`
 - Cryptography uses `cryptography` (Ed25519) + optional `sigstore`
 - BOMs validate against CycloneDX 1.5 JSON schema
+
+## Contact
+
+Responsible disclosure: **g@abejar.net**
