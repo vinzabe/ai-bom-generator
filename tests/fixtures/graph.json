@@ -1,0 +1,8 @@
+{"components": [
+  {"id":"leak","name":"leaked-weights","type":"machine-learning-model","license":"","source":""},
+  {"id":"base","name":"base-llm","type":"machine-learning-model","license":"Apache-2.0","source":"https://hf.co/org/base","derived_from":["leak"]},
+  {"id":"nc-data","name":"research-corpus","type":"data","license":"CC-BY-NC-4.0","source":"https://example.edu/corpus"},
+  {"id":"clean-data","name":"open-corpus","type":"data","license":"CC-BY-4.0","source":"https://example.org/open"},
+  {"id":"merge","name":"merged-model","type":"machine-learning-model","license":"Apache-2.0","source":"https://hf.co/org/merge","derived_from":["base","clean-data"]},
+  {"id":"ship","name":"product-model","type":"machine-learning-model","license":"Apache-2.0","source":"https://hf.co/org/ship","derived_from":["merge","nc-data"]}
+]}

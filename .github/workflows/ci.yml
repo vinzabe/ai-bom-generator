@@ -1,0 +1,35 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - name: ruff
+        run: ruff check src tests
+      - name: mypy (strict)
+        run: mypy --strict src/aibom
+      - name: tests + coverage
+        run: pytest --cov=aibom --cov-report=term-missing --cov-fail-under=85
+
+  demo-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m pip install -e .
+      - name: audit the sample lineage (expected to flag)
+        run: python -m aibom audit tests/fixtures/graph.json || true
+      - name: emit a CycloneDX-ML SBOM
+        run: python -m aibom generate tests/fixtures/graph.json > /tmp/bom.json && head -20 /tmp/bom.json

@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-bom-generator"
+version = "1.0.0"
+description = "AI/ML bill of materials generator: builds a CycloneDX-ML SBOM of models, datasets, and weights with TRANSITIVE provenance (a fine-tune of a merge of a leak), license propagation, and flagging of undeclared or restrictively-licensed lineage."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "vinzabe", email = "gabejar@usa.com" }]
+keywords = ["security", "supply-chain", "machine-learning", "sbom", "cyclonedx", "provenance"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Information Technology",
+  "Topic :: Security",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "hypothesis>=6", "mypy>=1.8", "ruff>=0.5"]
+
+[project.scripts]
+aibom = "aibom.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/vinzabe/ai-bom-generator"
+Issues = "https://github.com/vinzabe/ai-bom-generator/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aibom"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "src"
+packages = ["aibom"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ARG"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402", "S101", "ARG001", "ARG002", "ARG005", "F841"]
